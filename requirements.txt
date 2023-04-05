@@ -4,4 +4,3 @@ pandas==1.5.3
 numpy==1.23.5
 cufflinks==0.17.3
 plotly==5.9.0
-python==3.10.9
