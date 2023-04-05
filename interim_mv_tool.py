@@ -73,7 +73,6 @@ st.title("A simple web app for calculating returns and interim market values")
 
 st.write("""
     ### User Manual
-    * Click the button at the top left corner of this web page.
     * Enter a Ticker, start date, & end date for the period.
         * Enter the BMV, trade dates, & shares traded to return interim market value(s) as needed.
     * Press the 'Get Data' button below to display your return & interactive security data.
