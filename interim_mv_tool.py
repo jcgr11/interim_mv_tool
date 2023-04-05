@@ -69,14 +69,14 @@ end_date = st.sidebar.date_input(
 if start_date > end_date:
     st.sidebar.error("The end date must fall after the start date")
 
-st.title("A simple web app for calculating Mutual Fund & ETF returns")
+st.title("A simple web app for calculating returns and interim market values")
 
 st.write("""
     ### User Manual
     * Click the button at the top left corner of this web page.
     * Enter a Ticker, start date, & end date for the period.
         * Enter the BMV, trade dates, & shares traded to return interim market value(s) as needed.
-    * Press the 'Get Data' button below to display the fund Return & interactive data.
+    * Press the 'Get Data' button below to display your return & interactive security data.
 """)
 
 data, return_plot_data, geometric_mean, price = load_data(ticker, start_date, end_date)
