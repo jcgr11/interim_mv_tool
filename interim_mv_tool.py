@@ -15,7 +15,7 @@ cf.go_offline()
 @st.cache_data
 def load_data(symbol, start, end):
     if not symbol:
-        st.error("Please enter a valid ticker symbol")
+        st.error("Please enter a valid ticker")
         return None, None, None, None
     
     data = yf.download(symbol, start, end, progress=False, auto_adjust=True)
