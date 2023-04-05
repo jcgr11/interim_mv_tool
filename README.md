@@ -3,7 +3,9 @@
 ## Set up:
 * Import necessary packages
 * initialize notebook mode and go offline for cufflinks wrapper on plotly vizuals, this combination allows for interactive plots
-* Use streamlit cach_data decorator to allows streamlit to run the function in the .py file and store the return value in a cache. The next time the function is called with the same parameters and code (e.g., when a user interacts with the app), Streamlit will skip executing the function altogether and return the cached value instead.
+* Use streamlit @st_cache_data decorator to allows streamlit to run the function in the .py file and store the return value in a cache. The next time the function is called with the same parameters and code (e.g., when a user interacts with the app), Streamlit will skip executing the function altogether and return the cached value instead.
+* During development, the cache updates automatically as the function code changes, ensuring that the latest changes are reflected in the cache.
+* The @st_cache_data decorator is the recommended way to cache computations that return data: loading a DataFrame from CSV, transforming a NumPy array, querying an API, or any other function that returns a serializable data object (str, int, float, DataFrame, array, list, …). It creates a new copy of the data at each function call, making it safe against mutations and race conditions. 
 
 ## load_data function:
 * Takes three arguments: symbol, start, and end. 
