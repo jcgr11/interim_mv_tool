@@ -18,13 +18,22 @@ def load_data(symbol, start, end):
         st.error("Please enter a valid ticker")
         return None, None, None, None
     
-    data = yf.download(symbol, start, end, progress=False, auto_adjust=True)
+    # Get the previous business day before the start date chosen by the user because it is likely that the beginning and end date for some periods will be on a non trading day
+    start_date = pd.date_range(start - offsets.BDay(1), periods=1, freq='B')[0]
+    
+    # Get the next business day after the end date (same logic as above)
+    end_date = pd.date_range(end, periods=1, freq='B')[0] + offsets.BDay(1)
+
+    data = yf.download(symbol, start_date, end_date, progress=False, auto_adjust=True)
     price = data['Close']
 
+    # Calculate daily return
     daily_return = price.pct_change()
 
+    # Plot the daily return movements
     return_plot_data = (price.pct_change())*100
-
+    
+    # Geometrically link all daily returns for the period chose
     geometric_mean = ((((1 + daily_return)).prod()) - 1)
 
     return data, return_plot_data, geometric_mean, price
