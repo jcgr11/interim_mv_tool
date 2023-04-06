@@ -19,22 +19,15 @@ def load_data(symbol, start, end):
         return None, None, None, None
     
     start_date = pd.to_datetime(start) - pd.DateOffset(days=1)
-    if not start_date.isoweekday() in range(1, 6):
+    if not start_date.isoweekday() in range(1, 5):
         start_date = pd.date_range(start_date - offsets.BDay(1), periods=1, freq='B')[0]
 
     end_date = pd.to_datetime(end) + pd.DateOffset(days=1)
-    if not end_date.isoweekday() in range(1, 6):
+    if not end_date.isoweekday() in range(1, 5):
         end_date = pd.date_range(end_date, periods=1, freq='B')[0] + offsets.BDay(1)
 
-    data = yf.download(symbol, start_date, end_date)["Close"]\
-        .resample('D') \
-        .last() \
-        .dropna()
-    price = yf.download(symbol, start_date, end_date)["Adj Close"]\
-        .resample('D') \
-        .last() \
-        .dropna()
-
+    data = yf.download(symbol, start_date, end_date, progress = False, auto_adjust = True)
+    price = yf.download(symbol, start_date, end_date, progress = False, auto_adjust = True)["Close"]
     # Calculate daily return
     daily_return = price.pct_change()
 
@@ -75,17 +68,14 @@ st.sidebar.header("Fund Parameters")
 
 ticker = st.sidebar.text_input("Ticker")
 
-start_date = st.sidebar.date_input(
-    "Start Date",
-    datetime.date(2020, 1, 1)
-)
-end_date = st.sidebar.date_input(
-    "End Date",
-    datetime.date.today()
-)
+start_date = st.sidebar.date_input("Start Date")
+end_date = st.sidebar.date_input("End Date")
 
-if start_date > end_date:
-    st.sidebar.error("The end date must fall after the start date")
+# Validate input
+if start_date is not None and end_date is not None:
+    if start_date > end_date:
+        st.sidebar.error("Error: End date must fall after start date.")
+
 
 st.title("A simple web app for calculating returns and interim market values")
 
