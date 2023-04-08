@@ -32,8 +32,7 @@ def load_data(ticker, start, end):
     daily_return = price.pct_change()
 
     # Plot the daily return movements
-    last_year = end_date - pd.DateOffset(days=369) # used 369 instead of 365 to adjust for the off-setting above. 
-    # Offsetting was done to adjust for the unique yfinance date referencing that had to be accomodated for accuracy
+    last_year = end_date - pd.DateOffset(months=12)
     last_year = last_year.date()
     price_table = yf.download(ticker, last_year, end_date, progress = False, auto_adjust = True)["Close"]
     return_plot_data = (price_table.pct_change())*100
@@ -41,7 +40,7 @@ def load_data(ticker, start, end):
     # Geometrically link all daily returns for the period chose
     geometric_mean = ((1 + daily_return).prod() - 1)
 
-    return data, return_plot_data, geometric_mean, price, last_year, price_table
+    return data, return_plot_data, geometric_mean, last_year, price_table
 
 
 
@@ -90,7 +89,7 @@ st.write("""
     * Press the 'Get Data' button below to display your return & interactive security data.
 """)
 
-data, return_plot_data, geometric_mean, price, last_year, price_table = load_data(ticker, start_date, end_date)
+data, return_plot_data, geometric_mean, last_year, price_table = load_data(ticker, start_date, end_date)
 beginning_value = st.sidebar.number_input("Beginning Market Value", min_value=0.01, step=0.01)
 interim_values, trade_dates = calculate_interim_values(data, start_date, end_date, beginning_value)
 
@@ -125,10 +124,10 @@ if st.button("Get Data"):
 
     st.plotly_chart(fig, use_container_width=True)
 
-    data = data.reset_index() # move date and time to axis 1 index 0
-    date = data['Date'].dt.date # remove time stamp
-    ex_dt = data.iloc[:,1:] # create new date only index column
-    data = ex_dt.set_index(date) # set date column
+    price_table = price_table.reset_index() # move date and time to axis 1 index 0
+    date = price_table['Date'].dt.date # remove time stamp
+    ex_dt = price_table.iloc[:,1:] # create new date only index column
+    price_table = ex_dt.set_index(date) # set date column
     col1, col2 = st.columns(2)
     with col1:
         st.write(price_table)
