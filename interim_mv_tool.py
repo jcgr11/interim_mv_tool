@@ -32,7 +32,8 @@ def load_data(ticker, start, end):
     daily_return = price.pct_change()
 
     # Plot the daily return movements
-    last_year = end_date - pd.DateOffset(months=12)
+    last_year = end_date - pd.DateOffset(days=369) # used 369 instead of 365 to adjust for the off-setting above. 
+    # Offsetting was done to adjust for the unique yfinance date referencing that had to be accomodated for accuracy
     last_year = last_year.date()
     price_table = yf.download(ticker, last_year, end_date, progress = False, auto_adjust = True)["Close"]
     return_plot_data = (price_table.pct_change())*100
