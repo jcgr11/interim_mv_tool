@@ -32,15 +32,12 @@ def load_data(ticker, start, end):
     daily_return = price.pct_change()
 
     # Plot the daily return movements
-    last_year = end_date - pd.DateOffset(months=12)
-    last_year = last_year.date()
-    price_table = yf.download(ticker, last_year, end_date, progress = False, auto_adjust = True)["Close"]
-    return_plot_data = (price_table.pct_change())*100
+    return_plot_data = (price.pct_change())*100
 
     # Geometrically link all daily returns for the period chose
     geometric_mean = ((1 + daily_return).prod() - 1)
 
-    return data, return_plot_data, geometric_mean, last_year, price_table
+    return data, return_plot_data, geometric_mean, price
 
 
 
@@ -89,7 +86,7 @@ st.write("""
     * Press the 'Get Data' button below to display your return & interactive security data.
 """)
 
-data, return_plot_data, geometric_mean, last_year, price_table = load_data(ticker, start_date, end_date)
+data, return_plot_data, geometric_mean, price = load_data(ticker, start_date, end_date)
 beginning_value = st.sidebar.number_input("Beginning Market Value", min_value=0.01, step=0.01)
 interim_values, trade_dates = calculate_interim_values(data, start_date, end_date, beginning_value)
 
@@ -107,7 +104,7 @@ if st.button("Get Data"):
         fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.02)
 
         fig.add_trace(
-            go.Scatter(x=price_table.index, y=price_table.values, name='Adjusted Close Price'),
+            go.Scatter(x=price.index, y=price.values, name='Adjusted Close Price'),
             row=1, col=1
         )
 
@@ -120,19 +117,19 @@ if st.button("Get Data"):
     fig.update_yaxes(title_text='Adjusted Close Price', row=1, col=1)
     fig.update_yaxes(title_text='Daily Return', row=2, col=1)
 
-    fig.update_layout(title=f"Last 12 months of Daily {ticker} Price and Return movement: {last_year} to {end_date}")
+    fig.update_layout(title=f"Daily {ticker} Price and Returns: {start_date} to {end_date}")
 
     st.plotly_chart(fig, use_container_width=True)
 
-    price_table = price_table.reset_index() # move date and time to axis 1 index 0
-    date = price_table['Date'].dt.date # remove time stamp
-    ex_dt = price_table.iloc[:,1:] # create new date only index column
+    data = data.reset_index() # move date and time to axis 1 index 0
+    date = data['Date'].dt.date # remove time stamp
+    ex_dt = data.iloc[:,1:] # create new date only index column
     price_table = ex_dt.set_index(date) # set date column
     col1, col2 = st.columns(2)
     with col1:
-        st.write(price_table)
+        st.write(price)
     with col2:
-        st.write(price_table.describe())
+        st.write(price.describe())
 
 # To launch this app, for now, simply use the follow command in the command prompt:
 #   streamlit run interim_mv_tool.py
