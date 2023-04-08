@@ -89,7 +89,7 @@ st.write("""
     * Press the 'Get Data' button below to display your return & interactive security data.
 """)
 
-data, return_plot_data, geometric_mean, last_year, price_table = load_data(ticker, start_date, end_date)
+return_plot_data, geometric_mean, last_year, price_table = load_data(ticker, start_date, end_date)
 beginning_value = st.sidebar.number_input("Beginning Market Value", min_value=0.01, step=0.01)
 interim_values, trade_dates = calculate_interim_values(data, start_date, end_date, beginning_value)
 
