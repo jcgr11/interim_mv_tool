@@ -24,7 +24,7 @@ def load_data(ticker, start, end):
 
     end_date = pd.to_datetime(end) + pd.DateOffset(days=1)
     if not end_date.isoweekday() in range(1, 5):
-        end_date = pd.date_range(end_date, periods=1, freq='B')[0] + offsets.BDay(1)
+        end_date = pd.date_range(end_date, periods=1, freq='B')[0]
 
     data = yf.download(ticker, start_date, end_date, progress = False, auto_adjust = True)
     price = yf.download(ticker, start_date, end_date, progress = False, auto_adjust = True)["Close"]
