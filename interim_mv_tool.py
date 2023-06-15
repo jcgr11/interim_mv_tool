@@ -130,6 +130,3 @@ if st.button("Get Data"):
         st.write(price)
     with col2:
         st.write(price.describe())
-
-# To launch this app, for now, simply use the follow command in the command prompt:
-#   streamlit run interim_mv_tool.py
