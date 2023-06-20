@@ -122,7 +122,8 @@ if st.button("Get Data"):
     st.plotly_chart(fig, use_container_width=True)
 
     data = data.reset_index() # move date and time to axis 1 index 0
-    date = data['Date'].dt.date # remove time stamp
+    data['Date'] = pd.to_datetime(data['Date'])  # Convert 'Date' column to datetime type
+    date = data['Date'].dt.date  # Access the date portion of the datetime values
     ex_dt = data.iloc[:,1:] # create new date only index column
     price_table = ex_dt.set_index(date) # set date column
     col1, col2 = st.columns(2)
