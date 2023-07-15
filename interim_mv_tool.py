@@ -131,3 +131,5 @@ if st.button("Get Data"):
         st.write(price)
     with col2:
         st.write(price.describe())
+
+# To run locally enter "streamlit run interim_mv_tool.py" in terminal and press enter.
