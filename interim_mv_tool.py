@@ -12,7 +12,7 @@ import plotly.graph_objs as go
 init_notebook_mode(connected=True)
 cf.go_offline()
 
-@st.cache_data
+@st.cache
 def load_data(ticker, start, end):
     if not ticker:
         st.error("Please enter a valid ticker")
