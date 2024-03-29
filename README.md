@@ -44,3 +44,7 @@ Creates an interactive web interface for users to input data and view results.
 ## Disclaimer
 
 The data used in this application is sourced from Yahoo Finance and may not match the precision of paid data services. Results are to be considered as approximations for educational and proof-of-concept purposes only. Users should be aware of the limitations, especially regarding the accuracy of adjusted close prices for MFs and ETFs.
+
+## Running the Application
+
+To run locally enter "streamlit run C:/your_path/main.py" in terminal and press enter.
