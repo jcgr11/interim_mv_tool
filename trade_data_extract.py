@@ -2,12 +2,18 @@ import yfinance as yf
 import pandas as pd
 import pandas.tseries.offsets as offsets
 
+
 class FinanceData:
     def __init__(self, ticker, start, end):
         self.ticker = ticker.upper()
         self.start = pd.to_datetime(start) - pd.DateOffset(days=1)
         self.end = pd.to_datetime(end) + pd.DateOffset(days=1)
-        self.data, self.return_plot_data, self.geometric_mean, self.price = self.load_data()
+        (
+            self.data,
+            self.return_plot_data,
+            self.geometric_mean,
+            self.price,
+        ) = self.load_data()
 
     def adjust_date_for_weekend(self, date):
         if not date.isoweekday() in range(1, 6):
@@ -18,7 +24,9 @@ class FinanceData:
         start_date = self.adjust_date_for_weekend(self.start)
         end_date = self.adjust_date_for_weekend(self.end)
 
-        data = yf.download(self.ticker, start_date, end_date, progress=False, auto_adjust=True)
+        data = yf.download(
+            self.ticker, start_date, end_date, progress=False, auto_adjust=True
+        )
         price = data["Close"]
         daily_return = price.pct_change()
         return_plot_data = (price.pct_change()) * 100
@@ -36,7 +44,9 @@ class FinanceData:
                 trade_data = self.data[self.data.index >= trade_date]
                 if not trade_data.empty:
                     price_on_trade_date = trade_data.iloc[0]["Close"]
-                    interim_market_value = ((market_value / trade_data.iloc[0]["Open"]) + shares_traded) * price_on_trade_date
+                    interim_market_value = (
+                        (market_value / trade_data.iloc[0]["Open"]) + shares_traded
+                    ) * price_on_trade_date
                     interim_values.append(interim_market_value)
                     market_value = interim_market_value
                     trade_dates.append(trade_date)

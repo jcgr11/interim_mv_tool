@@ -1,8 +1,10 @@
 from streamlit_app import StreamlitApp
 
+
 def main():
     app = StreamlitApp()
     app.display_results()
+
 
 if __name__ == "__main__":
     main()
