@@ -1,6 +1,6 @@
-yfinance==0.2.14
-pandas==1.5.3
-numpy==1.23.5
+yfinance==0.2.37
+pandas==2.2.1
+numpy==1.26.4
 cufflinks==0.17.3
-plotly==5.9.0
-streamlit==1.25.0
+plotly==5.20.0
+streamlit==1.32.2
